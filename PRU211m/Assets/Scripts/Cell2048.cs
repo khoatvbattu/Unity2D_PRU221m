@@ -33,13 +33,27 @@ public class Cell2048 : MonoBehaviour
         // If it's equal to "a" that means we're shifting all the fill objects in the left direction
         if (whatWasSent == "a")
         {
-
+            // If it's not equal null that means our current cell is not one of the cells on the left column
+            if (left != null)
+            {
+                return;
+            }
+            // Temp variable
+            Cell2048 currentCell = this;
+            SlideLeft(currentCell);
         }
 
         // If it's equal to "d" that means we're shifting all the fill objects in the right direction
         if (whatWasSent == "d")
         {
-
+            // If it's not equal null that means our current cell is not one of the cells on the right column
+            if (right != null)
+            {
+                return;
+            }
+            // Temp variable
+            Cell2048 currentCell = this;
+            SlideRight(currentCell);
         }
 
         // If it's equal to "w" that means we're shifting all the fill objects in the up direction
@@ -58,7 +72,14 @@ public class Cell2048 : MonoBehaviour
         // If it's equal to "s" that means we're shifting all the fill objects in the down direction
         if (whatWasSent == "s")
         {
-
+            // If it's not equal null that means our current cell is not one of the cells on the bottom row
+            if (down != null)
+            {
+                return;
+            }
+            // Temp variable
+            Cell2048 currentCell = this;
+            SlideDown(currentCell);
         }
     }
 
@@ -150,6 +171,279 @@ public class Cell2048 : MonoBehaviour
                 return;
             }
             SlideUp(currentCell.down);
+        }
+    }
+
+    // Recursive function that will execute on each cell as we traverse up the column
+    void SlideDown(Cell2048 currentCell)
+    {
+        if (currentCell.up == null)
+        {
+            return;
+        }
+
+        // Check to see if our current cell is filled or not
+        if (currentCell.fill != null)
+        {
+            // Get the next available cell that is filled
+            Cell2048 nextCell = currentCell.up;
+
+            // If both conditions are true then we want to get the next available cell
+            // To break this loop it means that we're either at the top of our column or we've ran into a cell that is filled or both
+            while (nextCell.up != null && nextCell.fill == null)
+            {
+                nextCell = nextCell.up;
+            }
+
+            // Check if we are filled
+            if (nextCell.fill != null)
+            {
+                // Check to see if the current cell has the same value as this next cell
+                if (currentCell.fill.value == nextCell.fill.value)
+                {
+                    Debug.Log("doubled");
+
+                    // Set the parent of the next cell's fill to be the current cell
+                    nextCell.fill.transform.parent = currentCell.transform;
+
+                    // Anytime we're changing the parent of a fill object we need to set the fill variable of that cell to be the fill object that we're moving
+                    currentCell.fill = nextCell.fill;
+                    nextCell.fill = null;
+                }
+                else
+                {
+                    Debug.Log("!!!doubled");
+
+                    // Set the parent of our next fill to be the next cell from our current cell
+                    nextCell.fill.transform.parent = currentCell.up.transform;
+
+                    // Anytime we're changing the parent of a fill object we need to set the fill variable of that cell to be the fill object that we're moving
+                    currentCell.up.fill = nextCell.fill;
+                    nextCell.fill = null;
+                }
+            }
+            /*
+             * The else for this If statement that means We are at the top of our column and that cell is empty
+             */
+        }
+        /*
+         * This else statement means that the current cell is empty
+         */
+        else
+        {
+            // Get the next available cell that is filled
+            Cell2048 nextCell = currentCell.up;
+
+            // If both conditions are true then we want to get the next available cell
+            // To break this loop it means that we're either at the top of our column or we've ran into a cell that is filled or both
+            while (nextCell.up != null && nextCell.fill == null)
+            {
+                Debug.Log("here");
+                nextCell = nextCell.up;
+            }
+
+            // Check if we are filled
+            if (nextCell.fill != null)
+            {
+                nextCell.fill.transform.parent = currentCell.transform;
+
+                // Anytime we're changing the parent of a fill object we need to set the fill variable of that cell to be the fill object that we're moving
+                currentCell.fill = nextCell.fill;
+                nextCell.fill = null;
+
+                // Recurse through this function again for the same current cell
+                SlideDown(currentCell);
+                Debug.Log("Slide to empty");
+            }
+
+            // Code that we add before this IF statement will be executed on each cell as we traverse up the column
+            if (currentCell.up == null)
+            {
+                return;
+            }
+            SlideDown(currentCell.up);
+        }
+    }
+
+    // Recursive function that will execute on each cell as we traverse left the column
+    void SlideRight(Cell2048 currentCell)
+    {
+        if (currentCell.left == null)
+        {
+            return;
+        }
+
+        // Check to see if our current cell is filled or not
+        if (currentCell.fill != null)
+        {
+            // Get the next available cell that is filled
+            Cell2048 nextCell = currentCell.left;
+
+            // If both conditions are true then we want to get the next available cell
+            // To break this loop it means that we're either at the left of our column or we've ran into a cell that is filled or both
+            while (nextCell.left != null && nextCell.fill == null)
+            {
+                nextCell = nextCell.left;
+            }
+
+            // Check if we are filled
+            if (nextCell.fill != null)
+            {
+                // Check to see if the current cell has the same value as this next cell
+                if (currentCell.fill.value == nextCell.fill.value)
+                {
+                    Debug.Log("doubled");
+
+                    // Set the parent of the next cell's fill to be the current cell
+                    nextCell.fill.transform.parent = currentCell.transform;
+
+                    // Anytime we're changing the parent of a fill object we need to set the fill variable of that cell to be the fill object that we're moving
+                    currentCell.fill = nextCell.fill;
+                    nextCell.fill = null;
+                }
+                else
+                {
+                    Debug.Log("!!!doubled");
+
+                    // Set the parent of our next fill to be the next cell from our current cell
+                    nextCell.fill.transform.parent = currentCell.left.transform;
+
+                    // Anytime we're changing the parent of a fill object we need to set the fill variable of that cell to be the fill object that we're moving
+                    currentCell.left.fill = nextCell.fill;
+                    nextCell.fill = null;
+                }
+            }
+            /*
+             * The else for this If statement that means We are at the left of our column and that cell is empty
+             */
+        }
+        /*
+         * This else statement means that the current cell is empty
+         */
+        else
+        {
+            // Get the next available cell that is filled
+            Cell2048 nextCell = currentCell.left;
+
+            // If both conditions are true then we want to get the next available cell
+            // To break this loop it means that we're either at the left of our column or we've ran into a cell that is filled or both
+            while (nextCell.left != null && nextCell.fill == null)
+            {
+                Debug.Log("here");
+                nextCell = nextCell.left;
+            }
+
+            // Check if we are filled
+            if (nextCell.fill != null)
+            {
+                nextCell.fill.transform.parent = currentCell.transform;
+
+                // Anytime we're changing the parent of a fill object we need to set the fill variable of that cell to be the fill object that we're moving
+                currentCell.fill = nextCell.fill;
+                nextCell.fill = null;
+
+                // Recurse through this function again for the same current cell
+                SlideRight(currentCell);
+                Debug.Log("Slide to empty");
+            }
+
+            // Code that we add before this IF statement will be executed on each cell as we traverse left the column
+            if (currentCell.left == null)
+            {
+                return;
+            }
+            SlideRight(currentCell.left);
+        }
+    }
+
+    // Recursive function that will execute on each cell as we traverse right the column
+    void SlideLeft(Cell2048 currentCell)
+    {
+        if (currentCell.right == null)
+        {
+            return;
+        }
+
+        // Check to see if our current cell is filled or not
+        if (currentCell.fill != null)
+        {
+            // Get the next available cell that is filled
+            Cell2048 nextCell = currentCell.right;
+
+            // If both conditions are true then we want to get the next available cell
+            // To break this loop it means that we're either at the right of our column or we've ran into a cell that is filled or both
+            while (nextCell.right != null && nextCell.fill == null)
+            {
+                nextCell = nextCell.right;
+            }
+
+            // Check if we are filled
+            if (nextCell.fill != null)
+            {
+                // Check to see if the current cell has the same value as this next cell
+                if (currentCell.fill.value == nextCell.fill.value)
+                {
+                    Debug.Log("doubled");
+
+                    // Set the parent of the next cell's fill to be the current cell
+                    nextCell.fill.transform.parent = currentCell.transform;
+
+                    // Anytime we're changing the parent of a fill object we need to set the fill variable of that cell to be the fill object that we're moving
+                    currentCell.fill = nextCell.fill;
+                    nextCell.fill = null;
+                }
+                else
+                {
+                    Debug.Log("!!!doubled");
+
+                    // Set the parent of our next fill to be the next cell from our current cell
+                    nextCell.fill.transform.parent = currentCell.right.transform;
+
+                    // Anytime we're changing the parent of a fill object we need to set the fill variable of that cell to be the fill object that we're moving
+                    currentCell.right.fill = nextCell.fill;
+                    nextCell.fill = null;
+                }
+            }
+            /*
+             * The else for this If statement that means We are at the right of our column and that cell is empty
+             */
+        }
+        /*
+         * This else statement means that the current cell is empty
+         */
+        else
+        {
+            // Get the next available cell that is filled
+            Cell2048 nextCell = currentCell.right;
+
+            // If both conditions are true then we want to get the next available cell
+            // To break this loop it means that we're either at the right of our column or we've ran into a cell that is filled or both
+            while (nextCell.right != null && nextCell.fill == null)
+            {
+                Debug.Log("here");
+                nextCell = nextCell.right;
+            }
+
+            // Check if we are filled
+            if (nextCell.fill != null)
+            {
+                nextCell.fill.transform.parent = currentCell.transform;
+
+                // Anytime we're changing the parent of a fill object we need to set the fill variable of that cell to be the fill object that we're moving
+                currentCell.fill = nextCell.fill;
+                nextCell.fill = null;
+
+                // Recurse through this function again for the same current cell
+                SlideLeft(currentCell);
+                Debug.Log("Slide to empty");
+            }
+
+            // Code that we add before this IF statement will be executed on each cell as we traverse right the column
+            if (currentCell.right == null)
+            {
+                return;
+            }
+            SlideLeft(currentCell.right);
         }
     }
 }
