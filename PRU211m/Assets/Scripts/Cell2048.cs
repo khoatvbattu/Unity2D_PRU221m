@@ -81,6 +81,14 @@ public class Cell2048 : MonoBehaviour
             Cell2048 currentCell = this;
             SlideDown(currentCell);
         }
+
+        GameController.ticker++;
+
+        // Check to see if our ticker variable is equal to 4
+        if (GameController.ticker == 4)
+        {
+            GameController.instance.SpawnFill();
+        }
     }
 
     // Recursive function that will execute on each cell as we traverse down the column
@@ -110,7 +118,7 @@ public class Cell2048 : MonoBehaviour
                 // Check to see if the current cell has the same value as this next cell
                 if (currentCell.fill.value == nextCell.fill.value)
                 {
-                    Debug.Log("doubled");
+                    nextCell.fill.Double();
 
                     // Set the parent of the next cell's fill to be the current cell
                     nextCell.fill.transform.parent = currentCell.transform;
@@ -119,7 +127,7 @@ public class Cell2048 : MonoBehaviour
                     currentCell.fill = nextCell.fill;
                     nextCell.fill = null;
                 }
-                else
+                else if(currentCell.down.fill != nextCell.fill)
                 {
                     Debug.Log("!!!doubled");
 
@@ -201,7 +209,7 @@ public class Cell2048 : MonoBehaviour
                 // Check to see if the current cell has the same value as this next cell
                 if (currentCell.fill.value == nextCell.fill.value)
                 {
-                    Debug.Log("doubled");
+                    nextCell.fill.Double();
 
                     // Set the parent of the next cell's fill to be the current cell
                     nextCell.fill.transform.parent = currentCell.transform;
@@ -210,7 +218,7 @@ public class Cell2048 : MonoBehaviour
                     currentCell.fill = nextCell.fill;
                     nextCell.fill = null;
                 }
-                else
+                else if(currentCell.up.fill != nextCell.fill)
                 {
                     Debug.Log("!!!doubled");
 
@@ -292,7 +300,7 @@ public class Cell2048 : MonoBehaviour
                 // Check to see if the current cell has the same value as this next cell
                 if (currentCell.fill.value == nextCell.fill.value)
                 {
-                    Debug.Log("doubled");
+                    nextCell.fill.Double();
 
                     // Set the parent of the next cell's fill to be the current cell
                     nextCell.fill.transform.parent = currentCell.transform;
@@ -301,7 +309,7 @@ public class Cell2048 : MonoBehaviour
                     currentCell.fill = nextCell.fill;
                     nextCell.fill = null;
                 }
-                else
+                else if (currentCell.left.fill != nextCell.fill)
                 {
                     Debug.Log("!!!doubled");
 
@@ -383,7 +391,7 @@ public class Cell2048 : MonoBehaviour
                 // Check to see if the current cell has the same value as this next cell
                 if (currentCell.fill.value == nextCell.fill.value)
                 {
-                    Debug.Log("doubled");
+                    nextCell.fill.Double();
 
                     // Set the parent of the next cell's fill to be the current cell
                     nextCell.fill.transform.parent = currentCell.transform;
@@ -392,7 +400,7 @@ public class Cell2048 : MonoBehaviour
                     currentCell.fill = nextCell.fill;
                     nextCell.fill = null;
                 }
-                else
+                else if (currentCell.right.fill != nextCell.fill)
                 {
                     Debug.Log("!!!doubled");
 

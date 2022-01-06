@@ -5,15 +5,27 @@ using System;
 
 public class GameController : MonoBehaviour
 {
+    public static GameController instance;
+    public static int ticker;                   // Use to count how many cells have received our action
+
     [SerializeField] GameObject fillPrefab;     // Hold prefab object
     [SerializeField] Transform[] allCells;      // Array of transform
 
     public static Action<string> slide;
 
+    private void OnEnable()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartSpawnFill();
+        StartSpawnFill();
     }
 
     // Update is called once per frame
@@ -27,12 +39,16 @@ public class GameController : MonoBehaviour
         // Input controls the update function
         if (Input.GetKeyDown(KeyCode.A))
         {
+            ticker = 0;
+
             // Broadcast a message through our action
             slide("a");
         }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
+            ticker = 0;
+
             // Broadcast a message through our action
             slide("d");
 
@@ -40,12 +56,16 @@ public class GameController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
+            ticker = 0;
+
             // Broadcast a message through our action
             slide("w");
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
+            ticker = 0;
+
             // Broadcast a message through our action
             slide("s");
         }
@@ -103,5 +123,29 @@ public class GameController : MonoBehaviour
         }
     }
 
-    // Action that will send a message to all the instances of our Cell2048 script
+    // This make no longer a chance of spawning a fill object and only spawn ones with the value of 2
+    public void StartSpawnFill()
+    {
+        int WhichSpawn = UnityEngine.Random.Range(0, allCells.Length);                              // Random which transform we want to instantiate a new fill object
+
+        // Check if the spawn point already has a child's object
+        if (allCells[WhichSpawn].childCount != 0)
+        {
+            Debug.Log(allCells[WhichSpawn].name + " is already filled");
+            SpawnFill();
+            return;
+        }
+            GameObject tempFill = Instantiate(fillPrefab, allCells[WhichSpawn]);            // Instantiate a new prefab
+            Debug.Log(2);
+
+            // Pass the value of the fill object into to the fill value update function of the newly instantiated fill prefab
+            Fill2048 tempFillComp = tempFill.GetComponent<Fill2048>();
+
+            // Get the cell script from the current cell that we are instantiating this fill prefab onto
+            allCells[WhichSpawn].GetComponent<Cell2048>().fill = tempFillComp;
+
+            tempFillComp.FillValueUpdate(2);
+        
+
+    }
 }
