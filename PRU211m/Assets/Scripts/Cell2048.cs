@@ -28,6 +28,7 @@ public class Cell2048 : MonoBehaviour
 
     private void OnSlide(string whatWasSent)
     {
+        CellCheck();    
         Debug.Log(whatWasSent);
 
         // If it's equal to "a" that means we're shifting all the fill objects in the left direction
@@ -453,5 +454,79 @@ public class Cell2048 : MonoBehaviour
             }
             SlideLeft(currentCell.right);
         }
+    }
+
+    // This function will execute on all 16 cells and so if our isGameOver variable reachs 16 then we know that the player can no longer move and display the game over panel
+    void CellCheck()
+    {
+        // Look at each of the neighboring cells and see if the values of those cells are different than our current cell
+        
+        if(fill == null)
+        {
+            // If the current cell isn't filled then the player can still move
+            return;
+        }
+
+        /*
+         * These 4 if statements below means that our current cell is filled and blocked by another fill object with a different value on all 4 sides
+         */
+
+        // Check for the neighbor in the left direction
+        // Do this because we want to make sure that there is a neighbor in the left direction
+        if (left != null)
+        {
+            if (left.fill == null)
+            {
+                return;
+            }
+            if (left.fill.value == fill.value)
+            {
+                return;
+            }
+        }
+
+        // Check for the neighbor in the right direction
+        // Do this because we want to make sure that there is a neighbor in the right direction
+        if (right != null)
+        {
+            if (right.fill == null)
+            {
+                return;
+            }
+            if (right.fill.value == fill.value)
+            {
+                return;
+            }
+        }
+
+        // Check for the neighbor in the up direction
+        // Do this because we want to make sure that there is a neighbor in the up direction
+        if (up != null)
+        {
+            if(up.fill == null)
+            {
+                return;
+            }
+            if(up.fill.value == fill.value)
+            {
+                return;
+            }
+        }
+
+        // Check for the neighbor in the down direction
+        // Do this because we want to make sure that there is a neighbor in the down direction
+        if (down != null)
+        {
+            if (down.fill == null)
+            {
+                return;
+            }
+            if (down.fill.value == fill.value)
+            {
+                return;
+            }
+        }
+
+        GameController.instance.GameOverCheck();
     }
 }
