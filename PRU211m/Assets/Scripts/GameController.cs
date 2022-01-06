@@ -80,6 +80,10 @@ public class GameController : MonoBehaviour
 
             // Pass the value of the fill object into to the fill value update function of the newly instantiated fill prefab
             Fill2048 tempFillComp = tempFill.GetComponent<Fill2048>();
+
+            // Get the cell script from the current cell that we are instantiating this fill prefab onto
+            allCells[WhichSpawn].GetComponent<Cell2048>().fill = tempFillComp;
+
             tempFillComp.FillValueUpdate(2);
         }
 
@@ -91,6 +95,10 @@ public class GameController : MonoBehaviour
 
             // Pass the value of the fill object into to the fill value update function of the newly instantiated fill prefab
             Fill2048 tempFillComp = tempFill.GetComponent<Fill2048>();
+
+            // Get the cell script from the current cell that we are instantiating this fill prefab onto
+            allCells[WhichSpawn].GetComponent<Cell2048>().fill = tempFillComp;
+
             tempFillComp.FillValueUpdate(4);
         }
     }
