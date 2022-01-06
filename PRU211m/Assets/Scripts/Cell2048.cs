@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,15 +11,18 @@ public class Cell2048 : MonoBehaviour
     public Cell2048 left;
     public Cell2048 right;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        
+        GameController.slide += OnSlide;        // Subscribe function
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnDisable()
     {
-        
+        GameController.slide -= OnSlide;        // Unsubscribe function
+    }
+
+    private void OnSlide(string whatWasSent)
+    {
+        Debug.Log(whatWasSent);
     }
 }

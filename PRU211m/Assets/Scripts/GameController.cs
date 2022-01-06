@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameController : MonoBehaviour
 {
     [SerializeField] GameObject fillPrefab;     // Hold prefab object
     [SerializeField] Transform[] allCells;      // Array of transform
+
+    public static Action<string> slide;
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +23,37 @@ public class GameController : MonoBehaviour
         {
             SpawnFill();
         }
+
+        // Input controls the update function
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            // Broadcast a message through our action
+            slide("a");
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            // Broadcast a message through our action
+            slide("d");
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            // Broadcast a message through our action
+            slide("w");
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            // Broadcast a message through our action
+            slide("s");
+        }
     }
 
     public void SpawnFill()
     {
-        int WhichSpawn = Random.Range(0, allCells.Length);                              // Random which transform we want to instantiate a new fill object
+        int WhichSpawn = UnityEngine.Random.Range(0, allCells.Length);                              // Random which transform we want to instantiate a new fill object
 
         // Check if the spawn point already has a child's object
         if(allCells[WhichSpawn].childCount != 0)
@@ -34,7 +63,7 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        float chance = Random.Range(0f, 1f);
+        float chance = UnityEngine.Random.Range(0f, 1f);
         Debug.Log(chance);                      // Check chance
 
         // Chance that will not instantiate any object
@@ -65,4 +94,6 @@ public class GameController : MonoBehaviour
             tempFillComp.FillValueUpdate(4);
         }
     }
+
+    // Action that will send a message to all the instances of our Cell2048 script
 }
