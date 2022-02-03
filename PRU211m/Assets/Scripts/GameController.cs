@@ -113,14 +113,14 @@ public class GameController : MonoBehaviour
         float chance = UnityEngine.Random.Range(0f, 1f);
         Debug.Log(chance);                      // Check chance
 
-        // Chance that will not instantiate any object
-        if (chance <.2f)        
-        {
-            return;
-        }
+        //// Chance that will not instantiate any object
+        //if (chance <.2f)        
+        //{
+        //    return;
+        //}
 
         // Chance that will instantiate one fill object with the value 2
-        else if (chance <.8f)                                                               
+        if (chance <.8f)                                                               
         {
             GameObject tempFill = Instantiate(fillPrefab, allCells[WhichSpawn].transform);            // Instantiate a new prefab
             Debug.Log(2);
