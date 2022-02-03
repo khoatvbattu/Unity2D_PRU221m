@@ -11,12 +11,35 @@ public class Fill2048 : MonoBehaviour
 
     bool hasCombine;    // Use to set fill object display ( destroy!!!!!!)
 
+    Image myImage;
+
     public void FillValueUpdate(int valueIn)
     {
         value = valueIn;
 
         // Update value display
         valueDisplay.text = value.ToString();
+
+        int colorIndex = GetColorIndex(value);
+        Debug.Log(colorIndex + " color");
+        myImage = GetComponent<Image>();
+        myImage.color = GameController.instance.fillColors[colorIndex];
+    }
+
+    int GetColorIndex(int valueIn)
+    {
+        int index = 0;
+        while(valueIn != 1)
+        {
+            index++; 
+
+            // Because value in 2048 is always even so we can get the last value is 1 to exit the loop and get the index
+            valueIn /= 2;
+        }
+
+        // Subtract by 1 because array index is starting at index 0
+        index--;
+        return index;
     }
 
     // Moving the fill object
@@ -48,5 +71,9 @@ public class Fill2048 : MonoBehaviour
         value *= 2;
         GameController.instance.ScoreUpdate(value);
         valueDisplay.text = value.ToString();
+
+        int colorIndex = GetColorIndex(value);
+        Debug.Log(colorIndex + " color");
+        myImage.color = GameController.instance.fillColors[colorIndex];
     }
 }

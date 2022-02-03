@@ -17,6 +17,28 @@ public class GameController : MonoBehaviour
     public int myScore;
     [SerializeField] Text scoreDisplay;
 
+    // If the touch is longer than MAX_SWIPE_TIME, we dont consider it a swipe
+    public const float MAX_SWIPE_TIME = 0.5f;
+
+    // Factor of the screen width that we consider a swipe
+    // 0.17 works well for portrait mode 16:9 phone
+    public const float MIN_SWIPE_DISTANCE = 0.17f;
+
+    public static bool swipedRight = false;
+    public static bool swipedLeft = false;
+    public static bool swipedUp = false;
+    public static bool swipedDown = false;
+
+
+    public bool debugWithArrowKeys = true;
+
+    Vector2 startPos;
+    float startTime;
+
+
+
+    public Color[] fillColors;
+
     int isGameOver;
     [SerializeField] GameObject gameOverPanel;
 
@@ -43,6 +65,92 @@ public class GameController : MonoBehaviour
             SpawnFill();
         }
 
+        // Controller in phone
+        swipedRight = false;
+        swipedLeft = false;
+        swipedUp = false;
+        swipedDown = false;
+
+        if (Input.touches.Length > 0)
+        {
+            Touch t = Input.GetTouch(0);
+            if (t.phase == TouchPhase.Began)
+            {
+                startPos = new Vector2(t.position.x / (float)Screen.width, t.position.y / (float)Screen.width);
+                startTime = Time.time;
+            }
+            if (t.phase == TouchPhase.Ended)
+            {
+                if (Time.time - startTime > MAX_SWIPE_TIME) // Press too long
+                    return;
+
+                Vector2 endPos = new Vector2(t.position.x / (float)Screen.width, t.position.y / (float)Screen.width);
+
+                Vector2 swipe = new Vector2(endPos.x - startPos.x, endPos.y - startPos.y);
+
+                if (swipe.magnitude < MIN_SWIPE_DISTANCE) // Too short swipe
+                    return;
+
+                if (Mathf.Abs(swipe.x) > Mathf.Abs(swipe.y))
+                { // Horizontal swipe
+                    if (swipe.x > 0)
+                    {
+                        swipedRight = true;
+
+                        ticker = 0;
+                        isGameOver = 0;
+
+                        // Broadcast a message through our action
+                        slide("d");
+                    }
+                    else
+                    {
+                        swipedLeft = true;
+
+                        ticker = 0;
+                        isGameOver = 0;
+
+                        // Broadcast a message through our action
+                        slide("a");
+                    }
+                }
+                else
+                { // Vertical swipe
+                    if (swipe.y > 0)
+                    {
+                        swipedUp = true;
+
+                        ticker = 0;
+                        isGameOver = 0;
+
+                        // Broadcast a message through our action
+                        slide("w");
+                    }
+                    else
+                    {
+                        swipedDown = true;
+
+                        ticker = 0;
+                        isGameOver = 0;
+
+                        // Broadcast a message through our action
+                        slide("s");
+                    }
+                }
+            }
+        }
+
+        if (debugWithArrowKeys)
+        {
+            swipedDown = swipedDown || Input.GetKeyDown(KeyCode.DownArrow);
+            swipedUp = swipedUp || Input.GetKeyDown(KeyCode.UpArrow);
+            swipedRight = swipedRight || Input.GetKeyDown(KeyCode.RightArrow);
+            swipedLeft = swipedLeft || Input.GetKeyDown(KeyCode.LeftArrow);
+        }
+
+
+
+        // Controller WASD
         // Input controls the update function
         if (Input.GetKeyDown(KeyCode.A))
         {
