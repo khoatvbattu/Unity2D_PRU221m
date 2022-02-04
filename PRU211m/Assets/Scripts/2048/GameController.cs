@@ -38,8 +38,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField] int winningScore;
     [SerializeField] GameObject winningPanel;
-
     [SerializeField] GameObject gamePanel;
+    [SerializeField] GameObject mainPanel;
 
     bool hasWon;
 
@@ -330,5 +330,7 @@ public class GameController : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(0);
+        mainPanel.SetActive(false);
+        gamePanel.SetActive(true);
     }
 }
