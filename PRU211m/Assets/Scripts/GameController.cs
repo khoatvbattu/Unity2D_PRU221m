@@ -36,6 +36,11 @@ public class GameController : MonoBehaviour
     float startTime;
 
 
+    [SerializeField] int winningScore;
+    [SerializeField] GameObject winningPanel;
+
+    bool hasWon;
+
 
     public Color[] fillColors;
 
@@ -188,6 +193,21 @@ public class GameController : MonoBehaviour
             // Broadcast a message through our action
             slide("s");
         }
+    }
+
+    public void winningCheck(int highestFill)
+    {
+        if (hasWon) { return; }
+        if(highestFill == winningScore)
+        {
+            winningPanel.SetActive(true);
+            hasWon = true;
+        }
+    }
+
+    public void keepPlaying()
+    {
+        winningPanel.SetActive(false);
     }
 
     public void SpawnFill()

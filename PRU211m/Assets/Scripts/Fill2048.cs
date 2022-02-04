@@ -13,6 +13,7 @@ public class Fill2048 : MonoBehaviour
 
     Image myImage;
 
+
     public void FillValueUpdate(int valueIn)
     {
         value = valueIn;
@@ -26,6 +27,7 @@ public class Fill2048 : MonoBehaviour
         myImage.color = GameController.instance.fillColors[colorIndex];
     }
 
+    // Get color index inside array
     int GetColorIndex(int valueIn)
     {
         int index = 0;
@@ -75,5 +77,7 @@ public class Fill2048 : MonoBehaviour
         int colorIndex = GetColorIndex(value);
         Debug.Log(colorIndex + " color");
         myImage.color = GameController.instance.fillColors[colorIndex];
+
+        GameController.instance.winningCheck(value);
     }
 }
