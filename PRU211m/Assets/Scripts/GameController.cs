@@ -39,6 +39,8 @@ public class GameController : MonoBehaviour
     [SerializeField] int winningScore;
     [SerializeField] GameObject winningPanel;
 
+    [SerializeField] GameObject gamePanel;
+
     bool hasWon;
 
 
@@ -198,15 +200,23 @@ public class GameController : MonoBehaviour
     public void winningCheck(int highestFill)
     {
         if (hasWon) { return; }
-        if(highestFill == winningScore)
+        if (highestFill == winningScore)
         {
-            winningPanel.SetActive(true);
+            StartCoroutine(waitWinning());
             hasWon = true;
         }
     }
 
+    IEnumerator waitWinning()
+    {
+        yield return new WaitForSeconds(1);
+        gamePanel.SetActive(false);
+        winningPanel.SetActive(true);
+    }
+
     public void keepPlaying()
     {
+        gamePanel.SetActive(true);
         winningPanel.SetActive(false);
     }
 

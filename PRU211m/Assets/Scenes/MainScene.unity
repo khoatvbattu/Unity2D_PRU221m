@@ -3544,6 +3544,7 @@ MonoBehaviour:
   debugWithArrowKeys: 1
   winningScore: 8
   winningPanel: {fileID: 1621201187}
+  gamePanel: {fileID: 1111468473}
   fillColors:
   - {r: 1, g: 0.6933962, b: 0.6933962, a: 1}
   - {r: 1, g: 0.3537736, b: 0.3537736, a: 1}
