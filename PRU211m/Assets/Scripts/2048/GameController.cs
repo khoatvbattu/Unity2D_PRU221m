@@ -36,6 +36,13 @@ public class GameController : MonoBehaviour
     float startTime;
 
 
+    [SerializeField] int winningScore;
+    [SerializeField] GameObject winningPanel;
+    [SerializeField] GameObject gamePanel;
+    [SerializeField] GameObject mainPanel;
+
+    bool hasWon;
+
 
     public Color[] fillColors;
 
@@ -190,6 +197,29 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void winningCheck(int highestFill)
+    {
+        if (hasWon) { return; }
+        if (highestFill == winningScore)
+        {
+            StartCoroutine(waitWinning());
+            hasWon = true;
+        }
+    }
+
+    IEnumerator waitWinning()
+    {
+        yield return new WaitForSeconds(1);
+        gamePanel.SetActive(false);
+        winningPanel.SetActive(true);
+    }
+
+    public void keepPlaying()
+    {
+        gamePanel.SetActive(true);
+        winningPanel.SetActive(false);
+    }
+
     public void SpawnFill()
     {
         bool isFull = true;
@@ -300,5 +330,7 @@ public class GameController : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(0);
+        mainPanel.SetActive(false);
+        gamePanel.SetActive(true);
     }
 }
