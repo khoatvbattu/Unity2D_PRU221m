@@ -67,10 +67,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpawnFill();
-        }
+        
 
         // Controller in phone
         swipedRight = false;
@@ -194,6 +191,12 @@ public class GameController : MonoBehaviour
 
             // Broadcast a message through our action
             slide("s");
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SpawnFill();
         }
     }
 

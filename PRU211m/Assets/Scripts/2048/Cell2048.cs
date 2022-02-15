@@ -35,10 +35,10 @@ public class Cell2048 : MonoBehaviour
         if (whatWasSent == "a")
         {
             // If it's not equal null that means our current cell is not one of the cells on the left column
-            if (left != null)
-            {
-                return;
-            }
+            //if (left != null)
+            //{
+            //    return;
+            //}
             // Temp variable
             Cell2048 currentCell = this;
             SlideLeft(currentCell);
@@ -48,10 +48,10 @@ public class Cell2048 : MonoBehaviour
         if (whatWasSent == "d")
         {
             // If it's not equal null that means our current cell is not one of the cells on the right column
-            if (right != null)
-            {
-                return;
-            }
+            //if (right != null)
+            //{
+            //    return;
+            //}
             // Temp variable
             Cell2048 currentCell = this;
             SlideRight(currentCell);
@@ -61,10 +61,10 @@ public class Cell2048 : MonoBehaviour
         if (whatWasSent == "w")
         {
             // If it's not equal null that means our current cell is not one of the cells on the top row
-            if (up != null)
-            {
-                return;
-            }
+            //if (up != null)
+            //{
+            //    return;
+            //}
             // Temp variable
             Cell2048 currentCell = this;
             SlideUp(currentCell);
@@ -74,10 +74,10 @@ public class Cell2048 : MonoBehaviour
         if (whatWasSent == "s")
         {
             // If it's not equal null that means our current cell is not one of the cells on the bottom row
-            if (down != null)
-            {
-                return;
-            }
+            //if (down != null)
+            //{
+            //    return;
+            //}
             // Temp variable
             Cell2048 currentCell = this;
             SlideDown(currentCell);
